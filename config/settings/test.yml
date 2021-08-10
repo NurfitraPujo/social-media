@@ -1,0 +1,5 @@
+DB_HOST: localhost
+DB_PORT: 3306
+DB_USER: ruby_dev
+DB_PASSWORD: rubydev
+DB_SCHEMA: social_media_test
