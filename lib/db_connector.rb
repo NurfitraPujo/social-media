@@ -16,7 +16,7 @@ class DatabaseConnection
       password: env_config['DB_PASSWORD'],
       database: env_config['DB_SCHEMA']
     )
-    puts print_conn_success(env_config[:DB_HOST])
+    puts print_conn_success(env_config['DB_HOST'])
     @db_con.query_options.merge!(symbolize_keys: true)
   rescue Mysql2::Error => e
     print_conn_error(e)
