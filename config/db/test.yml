@@ -1,5 +1,0 @@
-HOST: localhost
-PORT: 3306
-USER: ruby_dev
-PASSWORD: rubydev
-DEFAULT_SCHEMA: social_media_test
