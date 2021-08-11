@@ -6,20 +6,20 @@ class DummyClass
 end
 
 describe Validations do
-  describe '#validate_email' do
+  describe '#email_valid?' do
     before(:all) do
       @dc = DummyClass.new
     end
     context 'given valid email' do
       it 'should return true' do
         email = 'fitra@gigih.com'
-        expect(@dc.validate_email?(email)).to eq(true)
+        expect(@dc.email_valid?(email)).to eq(true)
       end
     end
     context 'given invalid email' do
       it 'should return false' do
         email = 'fitra'
-        expect(@dc.validate_email?(email)).to be_falsey
+        expect(@dc.email_valid?(email)).to be_falsey
       end
     end
   end

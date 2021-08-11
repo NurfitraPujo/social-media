@@ -13,7 +13,7 @@ class User
   def valid?
     return false if @username.nil?
     return false if @email.nil?
-    return false unless validate_email?(email)
+    return false unless email_valid?(email)
 
     true
   end

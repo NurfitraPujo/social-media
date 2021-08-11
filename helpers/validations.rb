@@ -1,5 +1,5 @@
 module Validations
-  def validate_email?(email)
+  def email_valid?(email)
     /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/ === email
   end
 end
