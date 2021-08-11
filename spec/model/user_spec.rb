@@ -28,6 +28,17 @@ describe User do
         user = User.new(user_data)
         expect(user.valid?).to eq(true)
       end
+
+      context 'when email is invalid' do
+        it 'should return false' do
+          user_data = {
+            username: 'fitra',
+            email: 'fitra'
+          }
+          user = User.new(user_data)
+          expect(user.valid?).to eq(false)
+        end
+      end
     end
 
     context 'when not all required properties is given' do
