@@ -1,7 +1,12 @@
-require 'sinatra/base'
+require './models/user'
 
-class UserController < Sinatra::Base
-  get '/user' do
-    'This is user routes'
+class UserController
+  def initialize(model = User)
+    @model = model
+  end
+
+  def sign_up!(request_data)
+    user = @model.new(request_data)
+    user.save
   end
 end
