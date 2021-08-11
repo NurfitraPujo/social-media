@@ -53,21 +53,33 @@ describe User do
     end
   end
 
-  describe "#save" do
+  describe '#save' do
     before(:each) do
       db_con = DatabaseConnection.instance
-      db_con.query('DELETE FROM user');
+      db_con.query('DELETE FROM user')
     end
-    context "when called" do
+    context 'when item is valid' do
       it 'does create new record to persistence' do
         user_data = {
           username: 'fitra',
           email: 'fitra@gigih.com'
         }
         user = User.new(user_data)
-        user.save 
+        user.save
         users = User.all
         expect(users.size).to eq(1)
+      end
+    end
+    context 'when item is invalid' do
+      it 'does not create new record to persistence' do
+        user_data = {
+          username: 'fitra11',
+          email: 'fitra'
+        }
+        user = User.new(user_data)
+        user.save
+        users = User.all
+        expect(users.size).to be_zero
       end
     end
   end
