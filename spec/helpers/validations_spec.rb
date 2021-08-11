@@ -16,5 +16,11 @@ describe Validations do
         expect(@dc.validate_email?(email)).to eq(true)
       end
     end
+    context 'given invalid email' do
+      it 'should return false' do
+        email = 'fitra'
+        expect(@dc.validate_email?(email)).to be_falsey
+      end
+    end
   end
 end
