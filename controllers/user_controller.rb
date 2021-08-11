@@ -5,8 +5,8 @@ class UserController
     @model = model
   end
 
-  def sign_up!(request_data)
-    user = @model.new(request_data)
+  def sign_up!(user_data)
+    user = @model.new(user_data)
     user.save
   rescue UserError::UserInvalidError => e
     [400, e.message]
