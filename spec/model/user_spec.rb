@@ -75,15 +75,13 @@ describe User do
       end
     end
     context 'when user is invalid' do
-      it 'does not create new record to persistence' do
+      it 'does throws ArgumentError' do
         user_data = {
           username: 'fitra11',
           email: 'fitra'
         }
         user = User.new(user_data)
-        user.save
-        users = User.all
-        expect(users.size).to be_zero
+        expect { user.save }.to raise_error(ArgumentError)
       end
     end
     context 'when username or email is not unique' do

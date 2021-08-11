@@ -20,7 +20,7 @@ class User
   end
 
   def save(db_con = DatabaseConnection.instance)
-    return false unless valid?
+    raise ArgumentError, 'Invalid or undefined required properties' unless valid?
 
     db_con.query("INSERT into user(username, email, bio)
                    VALUES ('#{@username}', '#{email}', '#{@bio}')")
