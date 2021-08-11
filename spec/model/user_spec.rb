@@ -58,7 +58,7 @@ describe User do
       db_con = DatabaseConnection.instance
       db_con.query('DELETE FROM user')
     end
-    context 'when item is valid' do
+    context 'when user is valid' do
       it 'does create new record to persistence' do
         user_data = {
           username: 'fitra',
@@ -70,7 +70,7 @@ describe User do
         expect(users.size).to eq(1)
       end
     end
-    context 'when item is invalid' do
+    context 'when user is invalid' do
       it 'does not create new record to persistence' do
         user_data = {
           username: 'fitra11',
@@ -80,6 +80,23 @@ describe User do
         user.save
         users = User.all
         expect(users.size).to be_zero
+      end
+    end
+    context 'when username or email is not unique' do
+      it 'throws an persistence error' do
+        unique_user_data = {
+          username: 'fitra',
+          email: 'fitra@gigih.com'
+        }
+        non_unique_user_data = {
+          username: 'fitra',
+          email: 'fitra@gigih.com'
+        }
+        unique_user = User.new(unique_user_data)
+        non_unique_user = User.new(non_unique_user_data)
+        unique_user.save
+
+        expect { non_unique_user.save }.to raise_error(Mysql2::Error)
       end
     end
   end
