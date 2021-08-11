@@ -58,6 +58,10 @@ describe User do
       db_con = DatabaseConnection.instance
       db_con.query('DELETE FROM user')
     end
+    after(:all) do
+      db_con = DatabaseConnection.instance
+      db_con.query('DELETE FROM user')
+    end
     context 'when user is valid' do
       it 'does create new record to persistence' do
         user_data = {
