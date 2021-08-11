@@ -29,5 +29,15 @@ describe User do
         expect(user.valid?).to eq(true)
       end
     end
+
+    context 'when not all required properties is given' do
+      it 'should return false' do
+        user_data = {
+          username: 'fitra'
+        }
+        user = User.new(user_data)
+        expect(user.valid?).to be_falsey
+      end
+    end
   end
 end
