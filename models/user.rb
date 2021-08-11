@@ -7,6 +7,12 @@ module UserError
       'Invalid or undefined required properties'
     end
   end
+
+  class UserAlreadyExistError < StandardError
+    def message
+      'User already exist'
+    end
+  end
 end
 
 class User
@@ -29,11 +35,15 @@ class User
     true
   end
 
-  def save()
+  def save
     raise UserInvalidError unless valid?
 
     @db_con.query("INSERT into user(username, email, bio)
                    VALUES ('#{@username}', '#{email}', '#{@bio}')")
+  rescue Mysql2::Error => e
+    raise UserAlreadyExistError if e.message.match(/Duplicate entry/)
+
+    raise
   end
 
   def self.parse_raw(raw_user_data)

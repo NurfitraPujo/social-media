@@ -98,7 +98,7 @@ describe User do
         non_unique_user = User.new(non_unique_user_data)
         unique_user.save
 
-        expect { non_unique_user.save }.to raise_error(Mysql2::Error)
+        expect { non_unique_user.save }.to raise_error(UserError::UserAlreadyExistError)
       end
     end
   end
