@@ -8,5 +8,6 @@ class UserController
   def sign_up!(request_data)
     user = @model.new(request_data)
     user.save
+    { status: 201, body: '' }
   end
 end
