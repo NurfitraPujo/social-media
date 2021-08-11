@@ -44,5 +44,25 @@ describe UserController do
         expect(response).to eq(expected_response)
       end
     end
+    context 'when data given already existed in the system' do
+      before(:each) do
+        user_co = UserController.new
+        user_co.sign_up!({ username: 'fitra', email: 'fitra@gigih.com' })
+      end
+      it 'does not register user, and return error that user already exist' do
+        request_data = {
+          username: 'fitra',
+          email: 'fitra@gigih.com'
+        }
+        expected_response = {
+          status: 400,
+          body: 'User already exist'
+        }
+
+        user_co = UserController.new
+        response = user_co.sign_up!(request_data)
+        expect(response).to eq(expected_response)
+      end
+    end
   end
 end

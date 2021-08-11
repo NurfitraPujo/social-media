@@ -10,6 +10,8 @@ class UserController
     user.save
   rescue UserError::UserInvalidError => e
     { status: 400, body: e.message }
+  rescue UserError::UserAlreadyExistError => e
+    { status: 400, body: e.message }
   else
     { status: 201, body: '' }
   end
