@@ -1,8 +1,17 @@
 require './helpers/validations'
 require './lib/db_connector'
 
+module UserError
+  class UserInvalidError < ArgumentError
+    def message
+      'Invalid or undefined required properties'
+    end
+  end
+end
+
 class User
   include Validations
+  include UserError
   attr_reader :username, :email, :bio
 
   def initialize(user_data = {})
@@ -20,7 +29,7 @@ class User
   end
 
   def save(db_con = DatabaseConnection.instance)
-    raise ArgumentError, 'Invalid or undefined required properties' unless valid?
+    raise UserInvalidError unless valid?
 
     db_con.query("INSERT into user(username, email, bio)
                    VALUES ('#{@username}', '#{email}', '#{@bio}')")

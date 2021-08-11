@@ -81,7 +81,7 @@ describe User do
           email: 'fitra'
         }
         user = User.new(user_data)
-        expect { user.save }.to raise_error(ArgumentError)
+        expect { user.save }.to raise_error(UserError::UserInvalidError)
       end
     end
     context 'when username or email is not unique' do
