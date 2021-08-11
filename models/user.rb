@@ -14,10 +14,11 @@ class User
   include UserError
   attr_reader :username, :email, :bio
 
-  def initialize(user_data = {})
+  def initialize(user_data = {}, db_con = DatabaseConnection.instance)
     @username = user_data[:username]
     @email = user_data[:email]
     @bio = user_data[:bio]
+    @db_con = db_con
   end
 
   def valid?
@@ -28,10 +29,10 @@ class User
     true
   end
 
-  def save(db_con = DatabaseConnection.instance)
+  def save()
     raise UserInvalidError unless valid?
 
-    db_con.query("INSERT into user(username, email, bio)
+    @db_con.query("INSERT into user(username, email, bio)
                    VALUES ('#{@username}', '#{email}', '#{@bio}')")
   end
 
