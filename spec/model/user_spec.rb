@@ -67,7 +67,7 @@ describe User do
         user = User.new(user_data)
         user.save 
         users = User.all
-        expect(users.count).to eq(1)
+        expect(users.size).to eq(1)
       end
     end
   end

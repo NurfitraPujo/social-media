@@ -26,7 +26,17 @@ class User
                    VALUES ('#{@username}', '#{email}', '#{@bio}')")
   end
 
+  def self.parse_raw(raw_user_data)
+    users = []
+    raw_user_data.each do |user_data|
+      user = User.new(user_data)
+      users << user
+    end
+    users
+  end
+
   def self.all(db_con = DatabaseConnection.instance)
-    db_con.query('SELECT * FROM user')
+    raw_user_data = db_con.query('SELECT * FROM user')
+    parse_raw(raw_user_data)
   end
 end
