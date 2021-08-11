@@ -1,5 +1,6 @@
 require './spec/test_helper'
 require './models/user'
+require './lib/db_connector'
 
 describe User do
   describe '#initialize' do
@@ -48,6 +49,25 @@ describe User do
         }
         user = User.new(user_data)
         expect(user.valid?).to be_falsey
+      end
+    end
+  end
+
+  describe "#save" do
+    before(:each) do
+      db_con = DatabaseConnection.instance
+      db_con.query('DELETE FROM user');
+    end
+    context "when called" do
+      it 'does create new record to persistence' do
+        user_data = {
+          username: 'fitra',
+          email: 'fitra@gigih.com'
+        }
+        user = User.new(user_data)
+        user.save 
+        users = User.all
+        expect(users.count).to eq(1)
       end
     end
   end
