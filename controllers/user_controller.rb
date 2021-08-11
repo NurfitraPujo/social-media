@@ -9,10 +9,10 @@ class UserController
     user = @model.new(request_data)
     user.save
   rescue UserError::UserInvalidError => e
-    { status: 400, body: e.message }
+    [400, e.message]
   rescue UserError::UserAlreadyExistError => e
-    { status: 400, body: e.message }
+    [400, e.message]
   else
-    { status: 201, body: '' }
+    [201]
   end
 end

@@ -9,10 +9,7 @@ describe UserController do
           username: 'fitra',
           email: 'fitra@gigih.com'
         }
-        expected_response = {
-          status: 201,
-          body: ''
-        }
+        expected_response = [201]
 
         model = double
         allow(model).to receive(:new).with(request_data).and_return(model)
@@ -29,10 +26,10 @@ describe UserController do
         request_data = {
           username: 'fitra'
         }
-        expected_response = {
-          status: 400,
-          body: 'Invalid or undefined required properties'
-        }
+        expected_response = [
+          400,
+          'Invalid or undefined required properties'
+        ]
 
         model = double
         allow(model).to receive(:new).with(request_data).and_return(model)
@@ -54,10 +51,10 @@ describe UserController do
           username: 'fitra',
           email: 'fitra@gigih.com'
         }
-        expected_response = {
-          status: 400,
-          body: 'User already exist'
-        }
+        expected_response = [
+          400,
+          'User already exist'
+        ]
 
         user_co = UserController.new
         response = user_co.sign_up!(request_data)
