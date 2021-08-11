@@ -15,6 +15,9 @@ gem "config", "~> 3.1"
 
 gem "sinatra-contrib", "~> 2.1"
 
-gem "rspec", "~> 3.10"
 
-gem "simplecov", "~> 0.21.2"
+
+group :test do 
+    gem "rspec", "~> 3.10"
+    gem "simplecov", "~> 0.21.2"
+end
