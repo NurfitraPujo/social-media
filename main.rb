@@ -2,6 +2,8 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 require 'config'
 
+require './routes/user_routes'
+
 class App < Sinatra::Application
   configure :development do
     register Sinatra::Reloader
@@ -13,10 +15,7 @@ class App < Sinatra::Application
   set :bind, Settings.HOST
   set :port, Settings.PORT
 
-  get '/' do
-    puts Settings.HOST
-    'Hello world'
-  end
+  use UserRoutes
 
   run! if __FILE__ == $0
 end
