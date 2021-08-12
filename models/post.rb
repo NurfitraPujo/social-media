@@ -1,7 +1,16 @@
 require './helpers/validations'
 
+module PostError
+  class PostInvalidError < ArgumentError
+    def message
+      'Invalid or undefined required properties'
+    end
+  end
+end
+
 class Post
   include Validations
+  include PostError
 
   def initialize(post_data = {})
     @username = post_data[:username]
@@ -17,7 +26,7 @@ class Post
   end
 
   def save(db_con = DatabaseConnection.instance)
-    return false unless valid?
+    raise PostInvalidError unless valid?
 
     db_con.query("INSERT INTO post(username, text) VALUES ('#{@username}','#{@text}')")
   end

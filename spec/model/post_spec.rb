@@ -66,16 +66,13 @@ describe Post do
       end
     end
     context 'when post data is invalid' do
-      it 'does not save post, and return error' do
+      it 'does not save post, and raise error' do
         post_data = {
           username: 'fitra',
           text: ''
         }
         post = Post.new(post_data)
-        post.save
-        posts = Post.all
-
-        expect(posts.count).to be_zero
+        expect{ post.save }.to raise_error(PostError::PostInvalidError)
       end
     end
   end
