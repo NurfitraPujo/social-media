@@ -13,7 +13,7 @@ describe Post do
       end
 
       context 'when text does not contain anything' do
-        it 'does return false' do
+        it 'does return false if empty' do
           post_data = {
             username: 'fitra',
             text: ''
@@ -22,7 +22,7 @@ describe Post do
           expect(post.valid?).to be_falsey
         end
 
-        it 'does return false' do
+        it 'does return false if only contains space' do
           post_data = {
             username: 'fitra',
             text: ' '
