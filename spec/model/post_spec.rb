@@ -42,4 +42,41 @@ describe Post do
       end
     end
   end
+
+  describe '#save' do
+    before(:each) do
+      db_con = DatabaseConnection.instance
+      db_con.query('DELETE FROM post')
+    end
+    after(:all) do
+      db_con = DatabaseConnection.instance
+      db_con.query('DELETE FROM post')
+    end
+    context 'when post data is valid' do
+      it 'does save post in the system' do
+        post_data = {
+          username: 'fitra',
+          text: 'testing post'
+        }
+        post = Post.new(post_data)
+        post.save
+        posts = Post.all
+
+        expect(posts.count).to eq(1)
+      end
+    end
+    context 'when post data is invalid' do
+      it 'does not save post, and return error' do
+        post_data = {
+          username: 'fitra',
+          text: ''
+        }
+        post = Post.new(post_data)
+        post.save
+        posts = Post.all
+
+        expect(posts.count).to be_zero
+      end
+    end
+  end
 end

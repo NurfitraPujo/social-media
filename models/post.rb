@@ -15,4 +15,14 @@ class Post
 
     true
   end
+
+  def save(db_con = DatabaseConnection.instance)
+    return false unless valid?
+
+    db_con.query("INSERT INTO post(username, text) VALUES ('#{@username}','#{@text}')")
+  end
+
+  def self.all(db_con = DatabaseConnection.instance)
+    db_con.query('SELECT * FROM post')
+  end
 end
