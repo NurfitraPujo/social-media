@@ -31,7 +31,17 @@ class Post
     db_con.query("INSERT INTO post(username, text) VALUES ('#{@username}','#{@text}')")
   end
 
+  def self.parse_raw(raw_posts_data)
+    posts = []
+    raw_posts_data.each do |post_data|
+      post = Post.new(post_data)
+      posts << post
+    end
+    posts
+  end
+
   def self.all(db_con = DatabaseConnection.instance)
-    db_con.query('SELECT * FROM post')
+    raw_posts_data = db_con.query('SELECT * FROM post')
+    parse_raw(raw_posts_data)
   end
 end

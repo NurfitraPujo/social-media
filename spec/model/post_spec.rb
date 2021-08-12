@@ -62,7 +62,7 @@ describe Post do
         post.save
         posts = Post.all
 
-        expect(posts.count).to eq(1)
+        expect(posts.size).to eq(1)
       end
     end
     context 'when post data is invalid' do
