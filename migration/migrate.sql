@@ -13,3 +13,14 @@ CREATE TABLE IF NOT EXISTS user (
     bio VARCHAR(255) DEFAULT '',
     PRIMARY KEY(id)
 );
+
+CREATE TABLE IF NOT EXISTS post (
+    id INT AUTO_INCREMENT,
+    username VARCHAR(20) NOT NULL,
+    text VARCHAR(1000) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(username)
+        REFERENCES user(username) 
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
