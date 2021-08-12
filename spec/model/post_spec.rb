@@ -11,6 +11,26 @@ describe Post do
         post = Post.new(post_data)
         expect(post.valid?).to eq(true)
       end
+
+      context 'when text does not contain anything' do
+        it 'does return false' do
+          post_data = {
+            username: 'fitra',
+            text: ''
+          }
+          post = Post.new(post_data)
+          expect(post.valid?).to be_falsey
+        end
+
+        it 'does return false' do
+          post_data = {
+            username: 'fitra',
+            text: ' '
+          }
+          post = Post.new(post_data)
+          expect(post.valid?).to be_falsey
+        end
+      end
     end
     context 'when not all required properties is present' do
       it 'does return false' do
