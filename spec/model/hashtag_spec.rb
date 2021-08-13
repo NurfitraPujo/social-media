@@ -1,6 +1,12 @@
 require './models/hashtag'
 
 describe Hashtag do
+  context 'when created' do
+    it 'does have at least 1 occurence' do
+      hashtag = Hashtag.new(hashtag: 'testhashtag')
+      expect(hashtag.occurence).to be >= 1
+    end
+  end
   describe '#valid?' do
     context 'when all required properties is present' do
       it 'does return true' do
