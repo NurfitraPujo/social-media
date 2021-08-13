@@ -6,6 +6,10 @@ describe Hashtag do
       hashtag = Hashtag.new(hashtag: 'testhashtag')
       expect(hashtag.occurence).to be >= 1
     end
+    it 'does define timestamp of when it was created' do
+      hashtag = Hashtag.new(hashtag: 'testhashtag')
+      expect(hashtag.instance_variable_defined?(:@timestamp)).to eq(true)
+    end
   end
   describe '#valid?' do
     context 'when all required properties is present' do
