@@ -8,5 +8,6 @@ class PostController
   def post!(post_data)
     post = @model.new(post_data)
     post.save
+    [201]
   end
 end
