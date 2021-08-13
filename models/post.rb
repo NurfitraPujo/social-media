@@ -30,7 +30,7 @@ class Post
   def save(db_con = DatabaseConnection.instance)
     raise PostInvalidError unless valid?
 
-    db_con.query("INSERT INTO post(username, text) VALUES ('#{@username}','#{@text}')")
+    db_con.query("INSERT INTO post(username, text, timestamp) VALUES ('#{@username}','#{@text}','#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}')")
   end
 
   def self.parse_raw(raw_posts_data)
