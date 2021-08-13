@@ -4,9 +4,11 @@ describe Post do
   describe '#valid?' do
     context 'when all required properties is present' do
       it 'does return true' do
+        curr_time = Time.now
         post_data = {
           username: 'fitra',
-          text: 'This is post example'
+          text: 'This is post example',
+          timestamp: curr_time
         }
         post = Post.new(post_data)
         expect(post.valid?).to eq(true)
@@ -54,9 +56,11 @@ describe Post do
     end
     context 'when post data is valid' do
       it 'does save post in the system' do
+        curr_time = Time.now
         post_data = {
           username: 'fitra',
-          text: 'testing post'
+          text: 'testing post',
+          timestamp: curr_time
         }
         post = Post.new(post_data)
         post.save
