@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS post (
     id INT AUTO_INCREMENT,
     username VARCHAR(20) NOT NULL,
     text VARCHAR(1000) NOT NULL,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
     FOREIGN KEY(username)
         REFERENCES user(username) 
