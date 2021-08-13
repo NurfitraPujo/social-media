@@ -4,7 +4,7 @@ describe Hashtag do
   describe '#valid?' do
     context 'when all required properties is present' do
       it 'does return true' do
-        hashtag = Hashtag.new('testhashtag')
+        hashtag = Hashtag.new(hashtag: 'testhashtag')
         expect(hashtag.valid?).to eq(true)
       end
     end
