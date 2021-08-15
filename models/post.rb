@@ -31,6 +31,10 @@ class Post
     @text.include?('#')
   end
 
+  def extract_hashtags
+    @text.scan(/#(\w+)/).flatten.uniq
+  end
+
   def save(db_con = DatabaseConnection.instance)
     raise PostInvalidError unless valid?
 

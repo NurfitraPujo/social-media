@@ -123,4 +123,20 @@ describe Post do
       end
     end
   end
+  describe '#extract_hashtags' do
+    context 'when post have hashtags' do
+      it 'does return an array of unique hashtag' do
+        curr_time = Time.now
+        post_data = {
+          username: 'fitra',
+          text: 'this post does have #hashtag #hashtag1 #hashtag1',
+          timestamp: curr_time
+        }
+        expected_hashtags = %w[hashtag hashtag1]
+        post = Post.new(post_data)
+        actual_hashtags = post.extract_hashtags
+        expect(actual_hashtags).to eq(expected_hashtags)
+      end
+    end
+  end
 end
