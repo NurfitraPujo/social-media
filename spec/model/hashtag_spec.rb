@@ -35,12 +35,25 @@ describe Hashtag do
       db_con.query('DELETE FROM hashtag')
     end
     context 'when object is valid' do
-      context 'and when object is unique' do
+      context 'and when hashtag is unique' do
         it 'does create a new record on the persistence' do
           hashtag = Hashtag.new(hashtag: 'testhashtag')
           hashtag.save
           hashtags = Hashtag.all
           expect(hashtags.size).to eq(1)
+        end
+      end
+      context 'and when hashtag is not unique' do
+        let(:hashtag) { Hashtag.new(hashtag: 'testhashtag') }
+        before(:each) do
+          hashtag.save
+        end
+        it 'does update the hashtag data in persistence' do
+          update_time = DateTime.now
+          hashtag = Hashtag.new(hashtag: 'testhashtag', last_updated: update_time)
+          hashtag.save
+          updated_hashtag = Hashtag.where('testhashtag')
+          expect(updated_hashtag.occurence).to eq(2)
         end
       end
     end
