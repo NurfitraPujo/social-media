@@ -27,6 +27,10 @@ class Post
     true
   end
 
+  def include_hashtags?
+    @text.include?('#')
+  end
+
   def save(db_con = DatabaseConnection.instance)
     raise PostInvalidError unless valid?
 
