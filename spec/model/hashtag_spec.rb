@@ -44,16 +44,30 @@ describe Hashtag do
         end
       end
       context 'and when hashtag is not unique' do
-        let(:hashtag) { Hashtag.new(hashtag: 'testhashtag') }
-        before(:each) do
-          hashtag.save
+        context 'and when prior last_updated is not more than 24 hours ago' do
+          let(:prior_hashtag) { Hashtag.new(hashtag: 'testhashtag') }
+          before(:each) do
+            prior_hashtag.save
+          end
+          it 'does update the hashtag data in persistence' do
+            hashtag = Hashtag.new(hashtag: 'testhashtag')
+            hashtag.save
+            updated_hashtag = Hashtag.where('testhashtag')
+            expect(updated_hashtag.occurence).to eq(2)
+          end
         end
-        it 'does update the hashtag data in persistence' do
-          update_time = DateTime.now
-          hashtag = Hashtag.new(hashtag: 'testhashtag', last_updated: update_time)
-          hashtag.save
-          updated_hashtag = Hashtag.where('testhashtag')
-          expect(updated_hashtag.occurence).to eq(2)
+        context 'and when prior last_updated is more than 24 hours ago' do
+          let(:prior_last_updated) { DateTime.now - 1 }
+          let(:prior_hashtag) { Hashtag.new(hashtag: 'testhashtag', last_updated: prior_last_updated) }
+          before(:each) do
+            prior_hashtag.save
+          end
+          it 'does reset the hashtag data in persistence' do
+            hashtag = Hashtag.new(hashtag: 'testhashtag')
+            hashtag.save
+            updated_hashtag = Hashtag.where('testhashtag')
+            expect(updated_hashtag.occurence).to eq(1)
+          end
         end
       end
     end
