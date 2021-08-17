@@ -39,7 +39,20 @@ class Post
   def save(db_con = DatabaseConnection.instance)
     raise PostInvalidError unless valid?
 
-    db_con.query("INSERT INTO post(username, text, timestamp) VALUES ('#{@username}','#{@text}','#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}')")
+    db_con.transaction do
+      db_con.query("INSERT INTO post(username, text, timestamp) VALUES ('#{@username}','#{@text}','#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}')")
+      if include_hashtags?
+        hashtags = extract_hashtags
+        save_hashtags(hashtags)
+
+        last_inserted_id = 1
+        db_con.query('SELECT LAST_INSERT_ID() as id FROM post').each do |last_id|
+          last_inserted_id = last_id[:id]
+        end
+
+        save_post_hashtags_relation(last_inserted_id, hashtags)
+      end
+    end
   end
 
   def save_hashtags(hashtags, hashtag_model = Hashtag)

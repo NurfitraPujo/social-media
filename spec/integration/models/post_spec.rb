@@ -39,7 +39,7 @@ describe 'Post' do
       end
     end
   end
-  describe '#save_post_hashtags_relation' do
+  describe '#save' do
     let(:glob_db_con) { DatabaseConnection.instance }
     before(:all) do
       db_con = DatabaseConnection.instance
@@ -65,16 +65,14 @@ describe 'Post' do
           text: 'this post does have #hashtag #hashtag1',
           timestamp: DateTime.now
         }
-        hashtags = %w[hashtag hashtag1]
 
         post = Post.new(post_data)
-        post.save
 
         last_insert_id = 0
         glob_db_con.query('SELECT LAST_INSERT_ID() as id FROM post').each do |last_id|
           last_insert_id = last_id[:id]
         end
-        post.save_post_hashtags_relation(last_insert_id, hashtags)
+        post.save
         new_relation_count = glob_db_con.query('SELECT * FROM post_have_hashtags')
         expect(new_relation_count.count).to eq(2)
       end

@@ -68,32 +68,6 @@ describe Post do
 
         expect(posts.size).to eq(1)
       end
-      it 'does calls the expected pesistence query' do
-        curr_time = Time.now
-        post_data = {
-          username: 'fitra',
-          text: 'testing post',
-          timestamp: curr_time
-        }
-        expected_query = "INSERT INTO post(username, text, timestamp) VALUES ('#{post_data[:username]}','#{post_data[:text]}','#{post_data[:timestamp].strftime('%Y-%m-%d %H:%M:%S')}')"
-
-        mock_db_con = double
-        allow(mock_db_con).to receive(:query)
-
-        post = Post.new(post_data)
-        expect(mock_db_con).to receive(:query).with(expected_query)
-        post.save(mock_db_con)
-      end
-    end
-    context 'when post data is invalid' do
-      it 'does not save post, and raise error' do
-        post_data = {
-          username: 'fitra',
-          text: ''
-        }
-        post = Post.new(post_data)
-        expect { post.save }.to raise_error(PostError::PostInvalidError)
-      end
     end
   end
   describe '#include_hashtags?' do
