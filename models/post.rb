@@ -49,6 +49,22 @@ class Post
     end
   end
 
+  def save_post_hashtags_relation(id_post, hashtags, db_con = DatabaseConnection.instance)
+    values = gen_post_hashtag_relation_queries(id_post, hashtags)
+    db_con.query("INSERT INTO post_have_hashtags(id_post, hashtag)
+                  VALUES #{values}")
+  end
+
+  def gen_post_hashtag_relation_queries(id_post, hashtags)
+    values = ''
+    hashtags.each do |hashtag|
+      hashtag_value = "(#{id_post}, '#{hashtag}')"
+      hashtag_value += ', ' unless hashtag.equal? hashtags.last
+      values << hashtag_value
+    end
+    values
+  end
+
   def self.parse_raw(raw_posts_data)
     posts = []
     raw_posts_data.each do |post_data|
