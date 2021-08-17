@@ -1,4 +1,5 @@
 require './helpers/validations'
+require './models/hashtag'
 
 module PostError
   class PostInvalidError < ArgumentError
@@ -39,6 +40,13 @@ class Post
     raise PostInvalidError unless valid?
 
     db_con.query("INSERT INTO post(username, text, timestamp) VALUES ('#{@username}','#{@text}','#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}')")
+  end
+
+  def save_hashtags(hashtags, hashtag_model = Hashtag)
+    hashtags.each do |hashtag_data|
+      hashtag = hashtag_model.new(hashtag: hashtag_data)
+      hashtag.save
+    end
   end
 
   def self.parse_raw(raw_posts_data)
