@@ -26,9 +26,8 @@ class Hashtag
 
   def update(db_con = DatabaseConnection.instance)
     prior_hashtag = self.class.where(@hashtag)
-    time_diff = Time.parse(@last_updated.to_s) - prior_hashtag.last_updated
-    if time_diff < 24
-      db_con.query("UPDATE hashtag SET occurence = #{@occurence + 1},
+    if prior_update_below_24hours?(prior_hashtag)
+      db_con.query("UPDATE hashtag SET occurence = #{prior_hashtag.occurence + 1},
                   last_updated = '#{@last_updated}'
                   WHERE hashtag = '#{@hashtag}'")
     else
@@ -36,6 +35,12 @@ class Hashtag
                   last_updated = '#{@last_updated}'
                   WHERE hashtag = '#{@hashtag}'")
     end
+  end
+
+  def prior_update_below_24hours?(prior_hashtag)
+    seconds_diff = Time.parse(@last_updated.to_s) - prior_hashtag.last_updated
+    hours_diff = seconds_diff / 60 / 60
+    hours_diff < 24
   end
 
   def self.parse_raw(raw_hashtags_data)
