@@ -44,4 +44,4 @@ CREATE TABLE IF NOT EXISTS post_have_hashtags (
         REFERENCES hashtag(hashtag)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
-)
+);

@@ -27,7 +27,7 @@ class Post
 
     true
   end
-
+  
   def include_hashtags?
     @text.include?('#')
   end
