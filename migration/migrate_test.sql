@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS hashtag (
 CREATE TABLE IF NOT EXISTS post_have_hashtags (
     id_post INT NOT NULL,
     hashtag VARCHAR(100) NOT NULL,
-    PRIMARY KEY(id_post, hashtag),
     FOREIGN KEY(id_post)
         REFERENCES post(id)
         ON UPDATE CASCADE
