@@ -45,6 +45,7 @@ class DatabaseConnection
     rescue StandardError => e
       puts e
       @db_con.query('ROLLBACK')
+      raise
     end
   end
 end

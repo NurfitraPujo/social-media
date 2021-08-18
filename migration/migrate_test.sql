@@ -23,3 +23,23 @@ CREATE TABLE IF NOT EXISTS post (
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 );
+
+CREATE TABLE IF NOT EXISTS hashtag (
+    hashtag VARCHAR(100) NOT NULL,
+    occurence INT NOT NULL,
+    last_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(hashtag)
+);
+
+CREATE TABLE IF NOT EXISTS post_have_hashtags (
+    id_post INT NOT NULL,
+    hashtag VARCHAR(100) NOT NULL,
+    FOREIGN KEY(id_post)
+        REFERENCES post(id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    FOREIGN KEY(hashtag)
+        REFERENCES hashtag(hashtag)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);

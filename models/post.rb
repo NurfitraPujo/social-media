@@ -1,4 +1,5 @@
 require './helpers/validations'
+require './models/hashtag'
 
 module PostError
   class PostInvalidError < ArgumentError
@@ -26,11 +27,55 @@ class Post
 
     true
   end
+  
+  def include_hashtags?
+    @text.include?('#')
+  end
+
+  def extract_hashtags
+    @text.scan(/#(\w+)/).flatten.uniq
+  end
 
   def save(db_con = DatabaseConnection.instance)
     raise PostInvalidError unless valid?
 
-    db_con.query("INSERT INTO post(username, text, timestamp) VALUES ('#{@username}','#{@text}','#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}')")
+    db_con.transaction do
+      db_con.query("INSERT INTO post(username, text, timestamp) VALUES ('#{@username}','#{@text}','#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}')")
+      if include_hashtags?
+        hashtags = extract_hashtags
+        save_hashtags(hashtags)
+
+        last_inserted_id = 1
+        db_con.query('SELECT LAST_INSERT_ID() as id FROM post').each do |last_id|
+          last_inserted_id = last_id[:id]
+        end
+
+        save_post_hashtags_relation(last_inserted_id, hashtags)
+      end
+    end
+  end
+
+  def save_hashtags(hashtags, hashtag_model = Hashtag)
+    hashtags.each do |hashtag_data|
+      hashtag = hashtag_model.new(hashtag: hashtag_data)
+      hashtag.save
+    end
+  end
+
+  def save_post_hashtags_relation(id_post, hashtags, db_con = DatabaseConnection.instance)
+    values = gen_post_hashtag_relation_queries(id_post, hashtags)
+    db_con.query("INSERT INTO post_have_hashtags(id_post, hashtag)
+                  VALUES #{values}")
+  end
+
+  def gen_post_hashtag_relation_queries(id_post, hashtags)
+    values = ''
+    hashtags.each do |hashtag|
+      hashtag_value = "(#{id_post}, '#{hashtag}')"
+      hashtag_value += ', ' unless hashtag.equal? hashtags.last
+      values << hashtag_value
+    end
+    values
   end
 
   def self.parse_raw(raw_posts_data)
