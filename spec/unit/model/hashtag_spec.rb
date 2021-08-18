@@ -2,6 +2,10 @@ require './models/hashtag'
 
 describe Hashtag do
   context 'when created' do
+    it 'does convert given hashtag into lowercase' do
+      hashtag = Hashtag.new(hashtag: 'TestHashtag')
+      expect(hashtag.hashtag).to eq('testhashtag')
+    end
     it 'does have at least 1 occurence' do
       hashtag = Hashtag.new(hashtag: 'testhashtag')
       expect(hashtag.occurence).to be >= 1

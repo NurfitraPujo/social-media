@@ -1,8 +1,8 @@
 class Hashtag
-  attr_reader :occurence, :last_updated
+  attr_reader :hashtag, :occurence, :last_updated
 
   def initialize(hashtag_data = {})
-    @hashtag = hashtag_data[:hashtag]
+    @hashtag = hashtag_data[:hashtag]&.downcase
     @occurence = hashtag_data[:occurence] || 1
     @last_updated = hashtag_data[:last_updated] || DateTime.now
   end
