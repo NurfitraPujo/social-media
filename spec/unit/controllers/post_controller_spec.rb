@@ -65,4 +65,14 @@ describe PostController do
       end
     end
   end
+  context 'when not given arguments' do
+    it 'does return bad request status' do
+      request_data = {}
+      expected_response = [400, 'No search parameters given']
+
+      post_co = PostController.new
+      actual_response = post_co.search(request_data)
+      expect(actual_response).to eq(expected_response)
+    end
+  end
 end

@@ -15,6 +15,8 @@ class PostController
   end
 
   def search(search_params)
+    return [400, 'No search parameters given'] if search_params.empty?
+
     posts = @model.where_hashtag(search_params[:hashtag])
     [200, posts]
   end
