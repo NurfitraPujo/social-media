@@ -134,5 +134,12 @@ describe Post do
         expect(got_posts.size).to eq(1)
       end
     end
+    context 'where there is no post that inlcude given hashtags' do
+      it 'does return an empty array' do
+        given_hashtag = 'hashtag'
+        got_posts = Post.where_hashtag(given_hashtag)
+        expect(got_posts.size).to be_zero
+      end
+    end
   end
 end
