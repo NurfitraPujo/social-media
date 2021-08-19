@@ -61,4 +61,11 @@ class Hashtag
     raw_hashtags_data = db_con.query("SELECT * FROM hashtag WHERE hashtag = '#{hashtag}'")
     parse_raw(raw_hashtags_data)[0]
   end
+
+  def self.trending(db_con = DatabaseConnection.instance)
+    raw_hashtags_data = db_con.query('SELECT * FROM hashtag
+                                      ORDER BY occurence DESC
+                                      LIMIT 5')
+    parse_raw(raw_hashtags_data)
+  end
 end

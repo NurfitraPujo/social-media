@@ -84,4 +84,48 @@ describe Hashtag do
       end
     end
   end
+  describe '#trending' do
+    context 'when called' do
+      before(:all) do
+        trending_hashtags = [
+          {
+            hashtag: 'testhashtag',
+            occurence: 30
+          },
+          {
+            hashtag: 'testhashtag1',
+            occurence: 55
+          },
+          {
+            hashtag: 'testhashtag2',
+            occurence: 23
+          },
+          {
+            hashtag: 'testhashtag3',
+            occurence: 11
+          },
+          {
+            hashtag: 'testhashtag4',
+            occurence: 22
+          }
+        ]
+        trending_hashtags.each do |trending_hashtag|
+          hashtag = Hashtag.new(trending_hashtag)
+          hashtag.save
+        end
+        not_trending_hashtag = Hashtag.new(hashtag: 'nottrending', occurence: 10)
+        not_trending_hashtag.save
+      end
+      after(:all) do
+        db_con = DatabaseConnection.instance
+        db_con.query('DELETE FROM hashtag')
+      end
+      it 'does return list of up to 5 hashtag with the highest occurence' do
+        trending_hashtags = Hashtag.trending
+        expect(trending_hashtags.size).to eq(5)
+        expect(trending_hashtags.first.occurence).to eq(55)
+        expect(trending_hashtags.last.occurence).to eq(11)
+      end
+    end
+  end
 end
