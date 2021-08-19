@@ -13,4 +13,9 @@ class PostController
   else
     [201]
   end
+
+  def search(search_params)
+    posts = @model.where_hashtag(search_params[:hashtag])
+    [200, posts]
+  end
 end
