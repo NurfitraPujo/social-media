@@ -35,7 +35,7 @@ class Post
   def extract_hashtags
     @text.scan(/#(\w+)/).flatten.uniq
   end
-
+  
   def save(db_con = DatabaseConnection.instance)
     raise PostInvalidError unless valid?
 
@@ -89,6 +89,11 @@ class Post
 
   def self.all(db_con = DatabaseConnection.instance)
     raw_posts_data = db_con.query('SELECT * FROM post')
+    parse_raw(raw_posts_data)
+  end
+
+  def self.where_hashtag(hashtag, db_con = DatabaseConnection.instance)
+    raw_posts_data = db_con.query("SELECT * FROM post JOIN post_have_hashtags WHERE post_have_hashtags.hashtag = #{hashtag}")
     parse_raw(raw_posts_data)
   end
 end

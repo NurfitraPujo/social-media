@@ -1,6 +1,10 @@
 require './models/post'
 
 describe Post do
+  after(:all) do
+    db_con = DatabaseConnection.instance
+    db_con.query('DELETE FROM post')
+  end
   describe '#valid?' do
     context 'when all required properties is present' do
       it 'does return true' do
@@ -110,6 +114,24 @@ describe Post do
         post = Post.new(post_data)
         actual_hashtags = post.extract_hashtags
         expect(actual_hashtags).to eq(expected_hashtags)
+      end
+    end
+  end
+  describe '.where_hashtag' do
+    context 'when there is post that include given hashtags' do
+      before(:all) do
+        post = Post.new(username: 'fitra', text: 'this post have #hashtag')
+        post.save
+      end
+      after(:all) do
+        db_con = DatabaseConnection.instance
+        db_con.query('DELETE FROM post_have_hashtags')
+        db_con.query('DELETE FROM post')
+      end
+      it 'does return an array of post' do
+        given_hashtag = 'hashtag'
+        got_posts = Post.where_hashtag(given_hashtag)
+        expect(got_posts.size).to eq(1)
       end
     end
   end
