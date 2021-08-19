@@ -54,7 +54,7 @@ describe PostController do
           text: 'this post have #hashtag',
           timestamp: DateTime.now
         )
-        expected_response = [200, [dummy_post]]
+        expected_response = [200, [dummy_post.to_json]]
 
         mock_model = double
         allow(mock_model).to receive(:where_hashtag).and_return([dummy_post])
