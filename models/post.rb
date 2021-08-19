@@ -23,11 +23,11 @@ class Post
     return false if @username.nil?
     return false if @text.nil?
     return false if text_is_empty?(@text)
-    return false if @timestamp.nil? 
+    return false if @timestamp.nil?
 
     true
   end
-  
+
   def include_hashtags?
     @text.include?('#')
   end
@@ -35,7 +35,7 @@ class Post
   def extract_hashtags
     @text.scan(/#(\w+)/).flatten.uniq
   end
-  
+
   def save(db_con = DatabaseConnection.instance)
     raise PostInvalidError unless valid?
 
@@ -76,6 +76,14 @@ class Post
       values << hashtag_value
     end
     values
+  end
+
+  def to_json(*_args)
+    post = {}
+    instance_variables.map do |var|
+      post[var.to_s.delete '@'] = instance_variable_get(var)
+    end
+    JSON.dump(post)
   end
 
   def self.parse_raw(raw_posts_data)
