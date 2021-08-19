@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'sinatra/json'
 require 'config'
 
 require './routes/user_routes'
@@ -15,7 +16,11 @@ class App < Sinatra::Application
 
   set :bind, Settings.HOST
   set :port, Settings.PORT
+  set :json_encoder, :to_json
 
+  before do
+    content_type :json
+  end
 
   use UserRoutes
   use PostRoutes
