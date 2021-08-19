@@ -1,6 +1,9 @@
 require './models/post'
+require './helpers/parser'
 
 class PostController
+  include Parser
+
   def initialize(model = Post)
     @model = model
   end
@@ -18,6 +21,6 @@ class PostController
     return [400, 'No search parameters given'] if search_params.empty?
 
     posts = @model.where_hashtag(search_params[:hashtag])
-    [200, posts]
+    [200, to_json_arr(posts)]
   end
 end
