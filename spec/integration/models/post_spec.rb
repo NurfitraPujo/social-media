@@ -42,10 +42,12 @@ describe 'Post' do
   describe '#save' do
     let(:glob_db_con) { DatabaseConnection.instance }
     before(:all) do
-      db_con = DatabaseConnection.instance
-      db_con.query("INSERT INTO user(username, email) VALUE ('fitra', 'fitra@gmail.com')")
-      db_con.query("INSERT INTO hashtag(hashtag, occurence) VALUES ('hashtag', 1)")
-      db_con.query("INSERT INTO hashtag(hashtag, occurence) VALUES ('hashtag1', 1)")
+      user = User.new(username: 'fitra', email: 'fitra@gmail.com')
+      hashtag = Hashtag.new(hashtag: 'hashtag')
+      hashtag1 = Hashtag.new(hashtag: 'hashtag1')
+      user.save
+      hashtag.save
+      hashtag1.save
     end
     before(:each) do
       db_con = DatabaseConnection.instance

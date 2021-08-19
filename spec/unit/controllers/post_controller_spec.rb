@@ -42,4 +42,37 @@ describe PostController do
       end
     end
   end
+
+  describe '#search' do
+    context 'when given hashtag' do
+      it 'does return a success response, and an array of posts' do
+        request_data = {
+          hashtag: 'hashtag'
+        }
+        dummy_post = Post.new(
+          username: 'fitra',
+          text: 'this post have #hashtag',
+          timestamp: DateTime.now
+        )
+        expected_response = [200, [dummy_post.to_json]]
+
+        mock_model = double
+        allow(mock_model).to receive(:where_hashtag).and_return([dummy_post])
+
+        post_co = PostController.new(mock_model)
+        actual_response = post_co.search(request_data)
+        expect(actual_response).to eq(expected_response)
+      end
+    end
+  end
+  context 'when not given arguments' do
+    it 'does return bad request status' do
+      request_data = {}
+      expected_response = [400, 'No search parameters given']
+
+      post_co = PostController.new
+      actual_response = post_co.search(request_data)
+      expect(actual_response).to eq(expected_response)
+    end
+  end
 end

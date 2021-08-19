@@ -16,7 +16,7 @@ class Post
   def initialize(post_data = {})
     @username = post_data[:username]
     @text = post_data[:text]
-    @timestamp = post_data[:timestamp]
+    @timestamp = post_data[:timestamp] || DateTime.now
   end
 
   def valid?
@@ -27,7 +27,7 @@ class Post
 
     true
   end
-  
+
   def include_hashtags?
     @text.include?('#')
   end
@@ -78,6 +78,14 @@ class Post
     values
   end
 
+  def to_json(*_args)
+    post = {}
+    instance_variables.map do |var|
+      post[var.to_s.delete '@'] = instance_variable_get(var)
+    end
+    JSON.dump(post)
+  end
+
   def self.parse_raw(raw_posts_data)
     posts = []
     raw_posts_data.each do |post_data|
@@ -89,6 +97,11 @@ class Post
 
   def self.all(db_con = DatabaseConnection.instance)
     raw_posts_data = db_con.query('SELECT * FROM post')
+    parse_raw(raw_posts_data)
+  end
+
+  def self.where_hashtag(hashtag, db_con = DatabaseConnection.instance)
+    raw_posts_data = db_con.query("SELECT * FROM post JOIN post_have_hashtags WHERE post_have_hashtags.hashtag = #{hashtag}")
     parse_raw(raw_posts_data)
   end
 end
