@@ -126,6 +126,21 @@ describe Hashtag do
         expect(trending_hashtags.first.occurence).to eq(55)
         expect(trending_hashtags.last.occurence).to eq(11)
       end
+      it 'does not return hashtags that is stale for more than 24 hours' do
+        stale_hashtag = Hashtag.new(
+          hashtag: 'testhashtag1',
+          occurence: 53,
+          last_updated: DateTime.now - 2
+        )
+        stale_hashtag.save
+        trending_hashtags = Hashtag.trending
+        one_day_ago = Time.now - (3600 * 24)
+        current_time = Time.now
+        hashtags_is_in24hours = trending_hashtags.all? do |hashtag|
+          hashtag.last_updated >= one_day_ago && hashtag.last_updated <= current_time
+        end
+        expect(hashtags_is_in24hours).to eq(true)
+      end
     end
   end
 end

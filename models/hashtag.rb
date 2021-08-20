@@ -64,6 +64,8 @@ class Hashtag
 
   def self.trending(db_con = DatabaseConnection.instance)
     raw_hashtags_data = db_con.query('SELECT * FROM hashtag
+                                      WHERE last_updated > DATE_SUB(NOW(), INTERVAL 24 HOUR)
+                                            AND last_updated <= NOW()
                                       ORDER BY occurence DESC
                                       LIMIT 5')
     parse_raw(raw_hashtags_data)
