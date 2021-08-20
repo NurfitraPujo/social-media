@@ -13,6 +13,14 @@ class Hashtag
     true
   end
 
+  def to_json(*_args)
+    hashtag = {}
+    instance_variables.map do |var|
+      hashtag[var.to_s.delete '@'] = instance_variable_get(var)
+    end
+    JSON.dump(hashtag)
+  end
+
   def save(db_con = DatabaseConnection.instance)
     return false unless valid?
 
