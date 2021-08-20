@@ -84,4 +84,63 @@ describe Hashtag do
       end
     end
   end
+  describe '#trending' do
+    context 'when called' do
+      before(:all) do
+        trending_hashtags = [
+          {
+            hashtag: 'testhashtag',
+            occurence: 30
+          },
+          {
+            hashtag: 'testhashtag1',
+            occurence: 55
+          },
+          {
+            hashtag: 'testhashtag2',
+            occurence: 23
+          },
+          {
+            hashtag: 'testhashtag3',
+            occurence: 11
+          },
+          {
+            hashtag: 'testhashtag4',
+            occurence: 22
+          }
+        ]
+        trending_hashtags.each do |trending_hashtag|
+          hashtag = Hashtag.new(trending_hashtag)
+          hashtag.save
+        end
+        not_trending_hashtag = Hashtag.new(hashtag: 'nottrending', occurence: 10)
+        not_trending_hashtag.save
+      end
+      after(:all) do
+        db_con = DatabaseConnection.instance
+        db_con.query('DELETE FROM hashtag')
+      end
+      it 'does return list of up to 5 hashtag with the highest occurence' do
+        trending_hashtags = Hashtag.trending
+        expect(trending_hashtags.size).to eq(5)
+        expect(trending_hashtags.first.occurence).to eq(55)
+        expect(trending_hashtags.last.occurence).to eq(11)
+      end
+      it 'does not return hashtags that is stale for more than 24 hours' do
+        stale_hashtag = Hashtag.new(
+          hashtag: 'testhashtag1',
+          occurence: 53,
+          last_updated: DateTime.now - 2
+        )
+        stale_hashtag.save
+        trending_hashtags = Hashtag.trending
+        one_day_ago = Time.now - (3600 * 24)
+        current_time = Time.now
+        hashtags_is_in24hours = trending_hashtags.all? do |hashtag|
+          hashtag.last_updated >= one_day_ago && hashtag.last_updated <= current_time
+        end
+        expect(hashtags_is_in24hours).to eq(true)
+      end
+    end
+  end
 end

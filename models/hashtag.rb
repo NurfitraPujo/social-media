@@ -13,6 +13,14 @@ class Hashtag
     true
   end
 
+  def to_json(*_args)
+    hashtag = {}
+    instance_variables.map do |var|
+      hashtag[var.to_s.delete '@'] = instance_variable_get(var)
+    end
+    JSON.dump(hashtag)
+  end
+
   def save(db_con = DatabaseConnection.instance)
     return false unless valid?
 
@@ -60,5 +68,14 @@ class Hashtag
   def self.where(hashtag, db_con = DatabaseConnection.instance)
     raw_hashtags_data = db_con.query("SELECT * FROM hashtag WHERE hashtag = '#{hashtag}'")
     parse_raw(raw_hashtags_data)[0]
+  end
+
+  def self.trending(db_con = DatabaseConnection.instance)
+    raw_hashtags_data = db_con.query('SELECT * FROM hashtag
+                                      WHERE last_updated > DATE_SUB(NOW(), INTERVAL 24 HOUR)
+                                            AND last_updated <= NOW()
+                                      ORDER BY occurence DESC
+                                      LIMIT 5')
+    parse_raw(raw_hashtags_data)
   end
 end

@@ -5,6 +5,7 @@ require 'config'
 
 require './routes/user_routes'
 require './routes/post_routes'
+require './routes/hashtag_routes'
 
 class App < Sinatra::Application
   configure :development do
@@ -24,6 +25,7 @@ class App < Sinatra::Application
 
   use UserRoutes
   use PostRoutes
+  use HashtagRoutes
 
   run! if __FILE__ == $0
 end
