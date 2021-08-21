@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "1d2d1b68-97cb-4449-baca-e3c85c6356c8",
+		"name": "Social Media",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "gigih",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "gigih2@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4567/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "gigih",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "gigih2@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4567/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "User Upload a Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "gigih",
+									"type": "text"
+								},
+								{
+									"key": "text",
+									"value": "this post has multiple #hashtag1 #hashtag",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4567/user/fitra/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"user",
+								"fitra",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Upload a Post with Attachment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "fitra",
+									"type": "text"
+								},
+								{
+									"key": "text",
+									"value": "this text has ",
+									"type": "text"
+								},
+								{
+									"key": "attachment",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4567/user/fitra/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"user",
+								"fitra",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Upload a Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "fitra",
+									"type": "text"
+								},
+								{
+									"key": "text",
+									"value": "this post has multiple #hashtag1 #hashtag",
+									"type": "text"
+								},
+								{
+									"key": "comment_on",
+									"value": "14",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4567/user/fitra/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"user",
+								"fitra",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search by Hashtag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4567/post/?hashtag=hashtag",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"post",
+								""
+							],
+							"query": [
+								{
+									"key": "hashtag",
+									"value": "hashtag"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hashtag",
+			"item": [
+				{
+					"name": "Trending Hashtags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4567/hashtag/trending",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"hashtag",
+								"trending"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
