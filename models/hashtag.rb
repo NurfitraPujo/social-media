@@ -18,7 +18,7 @@ class Hashtag
     instance_variables.map do |var|
       hashtag[var.to_s.delete '@'] = instance_variable_get(var)
     end
-    JSON.pretty_generate(hashtag)
+    JSON.dump(hashtag)
   end
 
   def save(db_con = DatabaseConnection.instance)

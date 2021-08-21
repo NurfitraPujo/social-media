@@ -33,7 +33,7 @@ class User
 
     true
   end
-
+  
   def to_json(*_args)
     user = {}
     instance_variables.map do |var|
@@ -51,14 +51,6 @@ class User
     raise UserAlreadyExistError if e.message.match(/Duplicate entry/)
 
     raise
-  end
-
-  def to_json(*_args)
-    user = {}
-    instance_variables.map do |var|
-      user[var.to_s.delete '@'] = instance_variable_get(var)
-    end
-    JSON.pretty_generate(user)
   end
 
   def self.parse_raw(raw_user_data)
