@@ -33,6 +33,14 @@ class User
 
     true
   end
+  
+  def to_json(*_args)
+    user = {}
+    instance_variables.map do |var|
+      user[var.to_s.delete '@'] = instance_variable_get(var)
+    end
+    JSON.pretty_generate(user)
+  end
 
   def save(db_con = DatabaseConnection.instance)
     raise UserInvalidError unless valid?
