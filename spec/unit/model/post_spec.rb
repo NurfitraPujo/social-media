@@ -85,6 +85,18 @@ describe Post do
           expect { post.save_post }.to raise_error(PostError::ParentPostNotExists)
         end
       end
+      context 'but when the User derived is not exists' do
+        it 'does throw error' do
+          curr_time = Time.now
+          post_data = {
+            username: '11111',
+            text: 'testing post',
+            timestamp: curr_time
+          }
+          post = Post.new(post_data)
+          expect { post.save_post }.to raise_error(PostError::UserNotExists)
+        end
+      end
     end
   end
   describe '#include_hashtags?' do

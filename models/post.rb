@@ -7,9 +7,16 @@ module PostError
       'Invalid or undefined required properties'
     end
   end
+
   class ParentPostNotExists < StandardError
     def message
       'Post commented is not exists or already deleted'
+    end
+  end
+
+  class UserNotExists < StandardError
+    def message
+      'User is not exists'
     end
   end
 end
@@ -77,7 +84,8 @@ class Post
     end
   rescue Mysql2::Error => e
     raise ParentPostNotExists if e.message.match(/comment_on/)
-    
+    raise UserNotExists if e.message.match(/user/)
+
     raise
   end
 
