@@ -17,6 +17,7 @@ class Post
     @username = post_data[:username]
     @text = post_data[:text]
     @timestamp = post_data[:timestamp] || DateTime.now
+    @comment_on = post_data[:comment_on]
   end
 
   def valid?
@@ -40,8 +41,9 @@ class Post
     raise PostInvalidError unless valid?
 
     db_con.transaction do
-      db_con.query("INSERT INTO post(username, text, timestamp) VALUES ('#{@username}','#{@text}','#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}')")
+      save_post
       if include_hashtags?
+
         hashtags = extract_hashtags
         save_hashtags(hashtags)
 
@@ -52,6 +54,21 @@ class Post
 
         save_post_hashtags_relation(last_inserted_id, hashtags)
       end
+    end
+  end
+
+  def save_post(db_con = DatabaseConnection.instance)
+    if @comment_on.nil?
+      db_con.query("INSERT INTO post(username, text, timestamp)
+                    VALUES ('#{@username}','#{@text}',
+                    '#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}'
+                    )")
+    else
+      db_con.query("INSERT INTO post(username, text, timestamp, comment_on)
+                    VALUES ('#{@username}','#{@text}',
+                    '#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}',
+                    #{@comment_on}
+                    )")
     end
   end
 

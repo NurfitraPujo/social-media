@@ -49,7 +49,7 @@ describe Post do
     end
   end
 
-  describe '#save' do
+  describe '#save_post' do
     before(:each) do
       db_con = DatabaseConnection.instance
       db_con.query('DELETE FROM post')
@@ -67,7 +67,7 @@ describe Post do
           timestamp: curr_time
         }
         post = Post.new(post_data)
-        post.save
+        post.save_post
         posts = Post.all
 
         expect(posts.size).to eq(1)
