@@ -30,6 +30,7 @@ class Post
     @text = post_data[:text]
     @timestamp = post_data[:timestamp] || DateTime.now
     @comment_on = post_data[:comment_on]
+    @attachment = post_data[:attachment]
   end
 
   def valid?
@@ -70,23 +71,36 @@ class Post
   end
 
   def save_post(db_con = DatabaseConnection.instance)
-    if @comment_on.nil?
-      db_con.query("INSERT INTO post(username, text, timestamp)
-                    VALUES ('#{@username}','#{@text}',
-                    '#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}'
-                    )")
-    else
-      db_con.query("INSERT INTO post(username, text, timestamp, comment_on)
-                    VALUES ('#{@username}','#{@text}',
-                    '#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}',
-                    #{@comment_on}
-                    )")
-    end
+    save_query = generate_save_post_query
+    db_con.query(save_query)
   rescue Mysql2::Error => e
     raise ParentPostNotExists if e.message.match(/comment_on/)
     raise UserNotExists if e.message.match(/user/)
 
     raise
+  end
+
+  def generate_save_post_query
+    query = ''
+    query << compose_save_post_query_header
+    query << compose_save_post_query_body
+    query
+  end
+
+  def compose_save_post_query_header
+    query_header = ' INSERT INTO post(username, text, timestamp'
+    query_header << ', comment_on' unless @comment_on.nil?
+    query_header << ', attachment' unless @attachment.nil?
+    query_header << ')'
+    query_header
+  end
+
+  def compose_save_post_query_body
+    query_body = " VALUES ('#{@username}', '#{@text}', '#{@timestamp.strftime('%Y-%m-%d %H:%M:%S')}'"
+    query_body << ", #{@comment_on}" unless @comment_on.nil?
+    query_body << ", '#{@attachment}'" unless @attachment.nil?
+    query_body << ')'
+    query_body
   end
 
   def save_hashtags(hashtags, hashtag_model = Hashtag)
