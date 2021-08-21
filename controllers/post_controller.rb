@@ -15,6 +15,8 @@ class PostController
     [400, e.message]
   rescue PostError::ParentPostNotExists => e
     [404, e.message]
+  rescue PostError::UserNotExists => e
+    [403, e.message]
   else
     [201]
   end

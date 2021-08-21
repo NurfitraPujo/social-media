@@ -16,7 +16,7 @@ module PostError
 
   class UserNotExists < StandardError
     def message
-      'User is not exists'
+      'User not exists'
     end
   end
 end
