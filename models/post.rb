@@ -131,7 +131,7 @@ class Post
     instance_variables.map do |var|
       post[var.to_s.delete '@'] = instance_variable_get(var)
     end
-    JSON.dump(post)
+    JSON.pretty_generate(post)
   end
 
   def self.parse_raw(raw_posts_data)
