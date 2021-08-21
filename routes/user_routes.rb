@@ -3,6 +3,8 @@ require 'sinatra/namespace'
 require './controllers/user_controller'
 require './controllers/post_controller'
 
+require 'fileutils'
+
 class UserRoutes < Sinatra::Base
   register Sinatra::Namespace
 
@@ -25,6 +27,9 @@ class UserRoutes < Sinatra::Base
         attachment = params['attachment']['filename']
         file = params['attachment']['tempfile']
         path = "./public/uploads/#{Time.now.to_i}_#{attachment}"
+
+        dirname = File.dirname(path)
+        FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
         File.open(path, 'wb') do |f|
           f.write(file.read)
