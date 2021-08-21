@@ -9,6 +9,7 @@ class UserRoutes < Sinatra::Base
   configure do
     set :user_controller, UserController.new
     set :post_controller, PostController.new
+    set :upload_path, './public/uploads/'
   end
 
   namespace '/user' do
@@ -20,11 +21,23 @@ class UserRoutes < Sinatra::Base
       settings.user_controller.sign_up!(user_data)
     end
     post '/:username/posts' do
+      attachment = nil
+      if params['attachment']
+        attachment = params['attachment']['filename']
+        file = params['attachment']['tempfile']
+        path = settings.upload_path.concat(attachment)
+
+        File.open(path, 'wb') do |f|
+          f.write(file.read)
+        end
+
+      end
       post_data = {
         username: params['username'],
         text: params['text'],
         timestamp: Time.now,
-        comment_on: params['comment_on']
+        comment_on: params['comment_on'],
+        attachment: attachment
       }
       settings.post_controller.post!(post_data)
     end
