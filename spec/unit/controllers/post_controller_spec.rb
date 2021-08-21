@@ -21,6 +21,47 @@ describe PostController do
         expect(model).to have_received(:save)
         expect(response).to eq(expected_response)
       end
+      context 'but when post mentioned by the comment is not existed' do
+        it 'does not save, and return not found error' do
+          request_data = {
+            username: 'fitra',
+            text: 'This is example post',
+            timestamp: Time.now,
+            comment_on: 1
+          }
+          expected_response = [404, 'Post commented is not exists or already deleted']
+
+          model = double
+          allow(model).to receive(:new).with(request_data).and_return(model)
+          allow(model).to receive(:save).and_raise(PostError::ParentPostNotExists)
+
+          post_co = PostController.new(model)
+          response = post_co.post!(request_data)
+
+          expect(model).to have_received(:save)
+          expect(response).to eq(expected_response)
+        end
+      end
+      context 'but when user provided is not existed' do
+        it 'does not save, and return not permitted error' do
+          request_data = {
+            username: 'ssss',
+            text: 'This is example post',
+            timestamp: Time.now
+          }
+          expected_response = [403, 'User not exists']
+
+          model = double
+          allow(model).to receive(:new).with(request_data).and_return(model)
+          allow(model).to receive(:save).and_raise(PostError::UserNotExists)
+
+          post_co = PostController.new(model)
+          response = post_co.post!(request_data)
+
+          expect(model).to have_received(:save)
+          expect(response).to eq(expected_response)
+        end
+      end
     end
     context 'when not all required properties is not given' do
       it 'does not save new post, and return bad request response' do

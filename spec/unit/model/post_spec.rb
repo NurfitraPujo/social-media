@@ -49,7 +49,7 @@ describe Post do
     end
   end
 
-  describe '#save' do
+  describe '#save_post' do
     before(:each) do
       db_con = DatabaseConnection.instance
       db_con.query('DELETE FROM post')
@@ -67,10 +67,35 @@ describe Post do
           timestamp: curr_time
         }
         post = Post.new(post_data)
-        post.save
+        post.save_post
         posts = Post.all
 
         expect(posts.size).to eq(1)
+      end
+      context 'but when the Post mentioned in comment is not exists' do
+        it 'does throw error' do
+          curr_time = Time.now
+          post_data = {
+            username: 'fitra',
+            text: 'testing post',
+            timestamp: curr_time,
+            comment_on: 1
+          }
+          post = Post.new(post_data)
+          expect { post.save_post }.to raise_error(PostError::ParentPostNotExists)
+        end
+      end
+      context 'but when the User derived is not exists' do
+        it 'does throw error' do
+          curr_time = Time.now
+          post_data = {
+            username: '11111',
+            text: 'testing post',
+            timestamp: curr_time
+          }
+          post = Post.new(post_data)
+          expect { post.save_post }.to raise_error(PostError::UserNotExists)
+        end
       end
     end
   end

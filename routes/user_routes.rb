@@ -23,7 +23,8 @@ class UserRoutes < Sinatra::Base
       post_data = {
         username: params['username'],
         text: params['text'],
-        timestamp: Time.now
+        timestamp: Time.now,
+        comment_on: params['comment_on']
       }
       settings.post_controller.post!(post_data)
     end
