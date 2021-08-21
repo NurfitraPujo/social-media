@@ -2,6 +2,27 @@ require './spec/test_helper'
 require './controllers/user_controller'
 
 describe UserController do
+  describe '#list_user!' do
+    context 'when called' do
+      it 'does return success response and list of user' do
+        user = [
+          User.new(username: 'fitra', email: 'fitra@gmail.com')
+        ]
+        user_jsons = [
+          User.new(username: 'fitra', email: 'fitra@gmail.com').to_json
+        ]
+        expected_response = [200, user_jsons]
+        
+        mock_model = double
+        allow(mock_model).to receive(:all).and_return(user)
+
+        user_co = UserController.new(mock_model)
+        actual_response = user_co.list!
+
+        expect(actual_response).to eq(expected_response)
+      end
+    end
+  end
   describe '#sign_up!' do
     context 'when user is new and valid' do
       it 'does register new user' do
