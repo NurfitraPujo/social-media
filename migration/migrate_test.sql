@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS post (
     text VARCHAR(1000) NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     comment_on INT,
+    attachment VARCHAR(255),
     PRIMARY KEY(id),
     FOREIGN KEY(username)
         REFERENCES user(username) 
