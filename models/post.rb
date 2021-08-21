@@ -7,6 +7,11 @@ module PostError
       'Invalid or undefined required properties'
     end
   end
+  class ParentPostNotExists < StandardError
+    def message
+      'Post commented is not exists or already deleted'
+    end
+  end
 end
 
 class Post
@@ -70,6 +75,10 @@ class Post
                     #{@comment_on}
                     )")
     end
+  rescue Mysql2::Error => e
+    raise ParentPostNotExists if e.message.match(/comment_on/)
+    
+    raise
   end
 
   def save_hashtags(hashtags, hashtag_model = Hashtag)
