@@ -19,9 +19,14 @@ CREATE TABLE IF NOT EXISTS post (
     username VARCHAR(20) NOT NULL,
     text VARCHAR(1000) NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    comment_on INT,
     PRIMARY KEY(id),
     FOREIGN KEY(username)
         REFERENCES user(username) 
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+    FOREIGN KEY(comment_on)
+        REFERENCES post(id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT
 );
