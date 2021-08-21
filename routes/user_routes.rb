@@ -14,6 +14,9 @@ class UserRoutes < Sinatra::Base
   end
 
   namespace '/user' do
+    get '/' do
+      settings.user_controller.list!
+    end
     post '/' do
       user_data = {
         username: params['username'],

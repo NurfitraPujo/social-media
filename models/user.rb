@@ -20,11 +20,10 @@ class User
   include UserError
   attr_reader :username, :email, :bio
 
-  def initialize(user_data = {}, db_con = DatabaseConnection.instance)
+  def initialize(user_data = {})
     @username = user_data[:username]
     @email = user_data[:email]
     @bio = user_data[:bio]
-    @db_con = db_con
   end
 
   def valid?
@@ -35,10 +34,10 @@ class User
     true
   end
 
-  def save
+  def save(db_con = DatabaseConnection.instance)
     raise UserInvalidError unless valid?
 
-    @db_con.query("INSERT into user(username, email, bio)
+    db_con.query("INSERT into user(username, email, bio)
                    VALUES ('#{@username}', '#{email}', '#{@bio}')")
   rescue Mysql2::Error => e
     raise UserAlreadyExistError if e.message.match(/Duplicate entry/)

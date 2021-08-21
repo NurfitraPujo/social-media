@@ -1,8 +1,16 @@
 require './models/user'
+require './helpers/parser'
 
 class UserController
+  include Parser
+
   def initialize(model = User)
     @model = model
+  end
+
+  def list!
+    users = @model.all
+    [200, to_json_arr(users)]
   end
 
   def sign_up!(user_data)
