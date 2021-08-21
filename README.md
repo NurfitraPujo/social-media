@@ -53,7 +53,7 @@ Before doing any instruction below make sure you have installed  [Mysql](https:/
 ### Setup
 1. Open mysql console and enter your root password
 2. Run the migration script
-```sql
+```bash
 # testing
 source /absolute/path/into/migrations/folder/migration_test.sql
 
@@ -63,7 +63,7 @@ source /absolute/path/into/migrations/folder/migration.sql
 ### Rollback
 1. Open mysql console and enter your root password
 2. Run the migration script
-```sql
+```bash
 # testing
 source /absolute/path/into/migrations/folder/rollback_test.sql
 
