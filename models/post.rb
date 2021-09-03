@@ -138,6 +138,7 @@ class Post
   def self.parse_raw(raw_posts_data)
     posts = []
     raw_posts_data.each do |post_data|
+      puts post_data
       post = Post.new(post_data)
       posts << post
     end
@@ -150,7 +151,11 @@ class Post
   end
 
   def self.where_hashtag(hashtag, db_con = DatabaseConnection.instance)
-    raw_posts_data = db_con.query("SELECT * FROM post JOIN post_have_hashtags WHERE post_have_hashtags.hashtag = #{hashtag}")
+    raw_posts_data = db_con.query("SELECT DISTINCT post.id, post.username, post.text, post.timestamp,
+                                   post.comment_on
+                                   FROM post JOIN post_have_hashtags
+                                   WHERE post_have_hashtags.hashtag = #{hashtag} AND
+                                   post_have_hashtags.id_post = post.id")
     parse_raw(raw_posts_data)
   end
 end
