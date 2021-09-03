@@ -26,6 +26,7 @@ class Post
   include PostError
 
   def initialize(post_data = {})
+    @id = post_data[:id]
     @username = post_data[:username]
     @text = post_data[:text]
     @timestamp = post_data[:timestamp] || DateTime.now
