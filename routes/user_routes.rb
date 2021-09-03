@@ -20,7 +20,8 @@ class UserRoutes < Sinatra::Base
     post '/' do
       user_data = {
         username: params['username'],
-        email: params['email']
+        email: params['email'],
+        bio: params['bio']
       }
       settings.user_controller.sign_up!(user_data)
     end
